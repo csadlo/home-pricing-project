@@ -1,0 +1,228 @@
+<DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home Pricing Predictor</title>
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <!-- Import the Plotly library. Note that this has to 
+        happen before we import any code that uses Plotly. -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <!-- Import the D3 library. Note that this has to happen 
+    before we import any code that uses D3. -->
+    <!-- <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://d3js.org/queue.v1.min.js"></script>
+    <script src="https://d3js.org/topojson.v0.min.js"></script> -->
+
+    <!-- D3 JavaScript
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.3/d3.min.js"></script>
+    <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
+    <script type="text/javascript" src="https://d3js.org/queue.v1.min.js"></script>
+    <script type="text/javascript" src="https://d3js.org/topojson.v0.min.js"></script>
+    <script type="text/javascript" src="https://d3js.org/d3-queue.v3.min.js"></script>
+    <script type="text/javascript" src="https://d3js.org/d3-array.v2.min.js"></script>
+    <script type="text/javascript" src="https://d3js.org/d3-geo.v2.min.js"></script>
+    <-------------------->
+
+    <script src="http://www.webglearth.com/v2/api.js"></script> 
+
+
+    <!-- Import some CSS, just to show how it's done. -->
+    <!-- Added for bootstrap components -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Added for Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="">
+    <!-- Added for Javalib -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    
+    <script src="http://d3js.org/topojson.v3.min.js"></script>
+    <script src="https://d3js.org/d3-queue.v3.min.js"></script>
+    
+    <!-- Our CSS -->
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+</head>
+
+<body>
+
+
+    <body style="background-color: #F3F3F3;">
+    <div class="container">
+        <div class="row">
+          <div class="col-md-12 jumbotron text-center" style="color: #00925F";id="jumbotron" >
+            <!-- <div style="background:transparent !important"> -->
+            
+                <h1> Home Pricing Prediction Model</h1>
+            
+          </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#"><span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle current_mode" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Visualizations  
+                    </a>
+                    <!-- <ul class="dropdown-menu" aria-labelledby="navbarDropdown" id="Presentation_Mode">
+                        <li class="dropdown-item" onclick="handleModeChange('home')" href="#">Home</li>
+                        <li class="dropdown-item" onclick="handleModeChange('globe')" href="#">Globe</li>
+                        <li class="dropdown-item" onclick="handleModeChange('leaflet')" href="#">Map</li>
+                        <li class="dropdown-item" onclick="handleModeChange('table')" href="#">Table</li>
+                        <li class="dropdown-item" onclick="handleModeChange('javaLib')" href="#">Bar Chart</li>
+                        <li class="dropdown-item disabled" onclick="handleModeChange('FIXME')"href="">Data</li>
+                    </ul> -->
+                </li>
+            </ul>
+            <!-- <form class="form-inline my-2 my-lg-0">
+                <a class="nav-link" href="">About <span class="sr-only">(current)</span></a>
+            </form> -->
+
+        </div>
+    </nav>
+    
+    <div class="container-fluid">
+        <div class="row">
+
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="sidebar-sticky pt-3">
+                    <h4>Search</h4>
+                    <ul class="list-group" id="filters">
+                        <li class="filter list-group-item">
+                            <label for="year">Year Built</label>
+                            <select class="form-control" id="yearform"></select>
+                        </li>
+                        <li class="filter list-group-item">
+                            <label for="name">Square Feet </label>
+                            <select class="form-control" id="nameform"></select>
+                        </li>
+                        <li class="filter list-group-item">
+                            <label for="city">Bedrooms</label>
+                            <select class="form-control" id="cityform"></select>
+                        </li>
+                        <li class="filter list-group-item">
+                            <label for="state">Bathrooms</label>
+                            <select class="form-control" id="countryform"></select>
+                        </li>
+                        <li class="filter list-group-item">
+                            <label for="category">ZIP Code</label>
+                            <select class="form-control" id="categoryform"></select>
+                        </li>
+                        <!-- <li class="filter list-group-item">
+                            <label for="wind">Wind Speed (MPH)</label>
+                            <select class="form-control" id="windform"></select>
+                        </li>
+                        <li class="filter list-group-item">
+                            <label for="minwind">Min Wind Speed (MPH)</label>
+                            <select class="form-control" id="minwindform"></select>
+                        </li>
+                        <li class="filter list-group-item">
+                            <label for="ocean">Ocean</label>
+                            <select class="form-control" id="oceanform"></select>
+                        </li> -->
+                    </ul>
+                </div>
+                <button id="search-btn" type="button" class="btn btn-default">Update</button>
+            </nav>
+
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+
+            <div class="boxed">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h2 class="h2" id="displayTitle" style="color: #00925F"> Pricing model for houses in the Seattle, Washington area</h2>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <!-- <div class="btn-group mr-2">
+                          <button type="button" class="btn btn-sm btn-outline-secondary">Download</button>
+                          <button type="button" class="btn btn-sm btn-outline-secondary">Print</button>
+                          &nbsp;
+                        </div> -->
+                    </div>
+                </div>
+
+                <div id="Data_Presentation_Summary">
+                    <h6 class="par" id="displayTitle">Description of the project goes here.
+                        Cheeseburger say cheese mascarpone. Fromage frais fondue macaroni cheese jarlsberg cheese on toast cream cheese cheese on toast cheesy grin. Port-salut fondue blue castello when the cheese comes out everybody's happy stinking bishop port-salut babybel queso. St. agur blue cheese cheese strings cheese and biscuits cheese and wine babybel parmesan rubber cheese roquefort. Camembert de normandie say cheese cheese slices.
+
+Red leicester cheese and biscuits cheese triangles. Say cheese st. agur blue cheese stilton cheeseburger cheesy grin airedale red leicester squirty cheese. Stinking bishop rubber cheese airedale cut the cheese fromage parmesan manchego cheese slices. Squirty cheese pepper jack who moved my cheese blue castello.
+                    </h6>
+                    
+                </div>
+
+                <div id="Data_Presentation_Window">
+                    <img src="static/images/house.jpg" alt="Clipart of House">
+                </div>
+
+            </main>
+            </div>
+            </div>
+        </div>
+            
+    </div>
+  </div>
+ 
+
+
+    <!-- D3 JavaScript -->
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.3/d3.min.js"></script>
+    <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
+    <script type="text/javascript" src="https://d3js.org/queue.v1.min.js"></script>
+    <script type="text/javascript" src="https://d3js.org/topojson.v0.min.js"></script> -->
+    <!---------------------->
+
+
+
+    <!-- ADDED -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+    <!-- ADDED for LEAFLET-->
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
+
+    <!-- Import the main JavaScript code. -->    
+
+
+    <!-- <img id="dom_image" style="display: none" src="../static/images/dom_gandalf_composite2.jpg">
+
+    <div class="form-group col-lg-3">
+        <label for="InputPassword"></label>
+        <input type="password" class="form-control" style="display: block;" onchange="equals()" id="InputPassword1" placeholder="Speak Friend and Enter.">
+    </div>
+
+    <script type="text/javascript">
+        var firstField = document.getElementById('InputPassword1');
+        var image =    document.getElementById('dom_image');
+    
+        function equals() {
+            console.log("Password is ", firstField.value);
+            if(firstField.value == "Mellon" || firstField.value == "mellon") {
+                image.style.display = 'block';
+                //image2.style.display = 'none';
+            }
+            else {
+                image.style.display = 'none';
+                //image2.style.display = 'block';
+            }
+        }
+        firstField.onkeyup = equals; -->
+    </script>
+
+</body>
+
+</html>
