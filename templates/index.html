@@ -49,22 +49,24 @@
 </head>
 
 <body>
-
+  <div class="wrapper">
 
     <body style="background-color: #F3F3F3;">
     <div class="container">
         <div class="row">
-          <div class="col-md-12 jumbotron text-center" style="color: #00925F";id="jumbotron" >
+            <div class="col-md-12 jumbotron text-center" style="color: #00925F";id="jumbotron" >
             <!-- <div style="background:transparent !important"> -->
             
                 <h1> Home Pricing Prediction Model</h1>
             
-          </div>
+            </div>
+        </div>
+    </div>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-
+        <a class="navbar-brand" href="#"><h1>King County Homes</h1></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
         </button>
     
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -76,21 +78,21 @@
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle current_mode" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Visualizations  
+                        Models  
                     </a>
-                    <!-- <ul class="dropdown-menu" aria-labelledby="navbarDropdown" id="Presentation_Mode">
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown" id="Presentation_Mode">
                         <li class="dropdown-item" onclick="handleModeChange('home')" href="#">Home</li>
-                        <li class="dropdown-item" onclick="handleModeChange('globe')" href="#">Globe</li>
-                        <li class="dropdown-item" onclick="handleModeChange('leaflet')" href="#">Map</li>
-                        <li class="dropdown-item" onclick="handleModeChange('table')" href="#">Table</li>
+                        <li class="dropdown-item" onclick="handleModeChange('Neural Network')" href="#">Neural Network</li>
+                        <li class="dropdown-item" onclick="handleModeChange('Multivariate Linear Regression')" href="#">MLR</li>
+                        <!-- <li class="dropdown-item" onclick="handleModeChange('table')" href="#">Table</li>
                         <li class="dropdown-item" onclick="handleModeChange('javaLib')" href="#">Bar Chart</li>
-                        <li class="dropdown-item disabled" onclick="handleModeChange('FIXME')"href="">Data</li>
-                    </ul> -->
+                        <li class="dropdown-item disabled" onclick="handleModeChange('FIXME')"href="">Data</li> -->
+                    </ul>
                 </li>
             </ul>
-            <!-- <form class="form-inline my-2 my-lg-0">
+            <form class="form-inline my-2 my-lg-0">
                 <a class="nav-link" href="">About <span class="sr-only">(current)</span></a>
-            </form> -->
+            </form>
 
         </div>
     </nav>
@@ -103,25 +105,69 @@
                     <h4>Search</h4>
                     <ul class="list-group" id="filters">
                         <li class="filter list-group-item">
+                            <label for="latitude">Latitude</label>
+                            <input class="form-control" id="latitudeform" placeholder="47.5112"></select>
+                            <label for="longitude">Longitude</label>
+                            <input class="form-control" id="longitudceform" placeholder="-122.257"></select>
+                        </li>
+                        <li class="filter list-group-item">
                             <label for="year">Year Built</label>
-                            <select class="form-control" id="yearform"></select>
+                            <input class="form-control" id="yearform" placeholder="1994"></select>
                         </li>
                         <li class="filter list-group-item">
-                            <label for="name">Square Feet </label>
-                            <select class="form-control" id="nameform"></select>
+                            <label for="livingsquarefootage">Living Space (sqft)</label>
+                            <input class="form-control" id="sqftlivform" placeholder="2000"></select>
+                        
+                            <label for="floors">Floors</label>
+                            <input class="form-control" id="categoryform" placeholder="1"></select>
+                        
+                            <label for="floors">Above Ground (sqft)</label>
+                            <input class="form-control" id="categoryform" placeholder="1600"></select>
+                        
+                            <label for="floors">Basement (sqft)</label>
+                            <input class="form-control" id="categoryform" placeholder="400"></select>
+                        
+                            <label for="lotsquarefootage">Lot Area (sqft)</label>
+                            <input class="form-control" id="sqftlotform" placeholder="5000"></select>
                         </li>
                         <li class="filter list-group-item">
-                            <label for="city">Bedrooms</label>
-                            <select class="form-control" id="cityform"></select>
+                            <label for="bedrooms">Bedrooms</label>
+                            <input class="form-control" id="bedroomsform" placeholder="3"></select>
                         </li>
                         <li class="filter list-group-item">
-                            <label for="state">Bathrooms</label>
-                            <select class="form-control" id="countryform"></select>
+                            <label for="bathrooms">Bathrooms</label>
+                            <input class="form-control" id="bathroomsform" placeholder="2"></select>
                         </li>
                         <li class="filter list-group-item">
-                            <label for="category">ZIP Code</label>
-                            <select class="form-control" id="categoryform"></select>
+                            <label for="grade">Grade</label>
+                            <select class="form-control" id="categoryform" placeholder="3">
+                                <option>13</option>
+                                <option>12</option>
+                                <option>11</option>
+                                <option>10</option>
+                                <option>9</option>
+                                <option>8</option>
+                                <option>7</option>
+                                <option>6</option>
+                                <option>5</option>
+                                <option>4</option>
+                                <option>3</option>
+                                <option>2</option>
+                                <option>1</option>
+                            </select>
                         </li>
+                        <li class="filter list-group-item">
+                            <label for="condition">Condition</label>
+                            <select class="form-control" id="categoryform" placeholder="7">
+                                <option>5</option>
+                                <option>4</option>
+                                <option>3</option>
+                                <option>2</option>
+                                <option>1</option>
+                            </select>
+                        </li>
+                        
+
                         <!-- <li class="filter list-group-item">
                             <label for="wind">Wind Speed (MPH)</label>
                             <select class="form-control" id="windform"></select>
@@ -160,6 +206,31 @@
 
 Red leicester cheese and biscuits cheese triangles. Say cheese st. agur blue cheese stilton cheeseburger cheesy grin airedale red leicester squirty cheese. Stinking bishop rubber cheese airedale cut the cheese fromage parmesan manchego cheese slices. Squirty cheese pepper jack who moved my cheese blue castello.
                     </h6>
+
+<p>
+BUILDING CONDITION <br>
+Relative to age and grade. Coded 1-5.<br>
+1 = Poor- Worn out. Repair and overhaul needed on painted surfaces, roofing, plumbing, heating and numerous functional inadequacies. Excessive deferred maintenance and abuse, limited value-in-use, approaching abandonment or major reconstruction; reuse or change in occupancy is imminent. Effective age is near the end of the scale regardless of the actual chronological age.<br>
+2 = Fair- Badly worn. Much repair needed. Many items need refinishing or overhauling, deferred maintenance obvious, inadequate building utility and systems all shortening the life expectancy and increasing the effective age.<br>
+3 = Average- Some evidence of deferred maintenance and normal obsolescence with age in that a few minor repairs are needed, along with some refinishing. All major components still functional and contributing toward an extended life expectancy. Effective age and utility is standard for like properties of its class and usage.<br>
+4 = Good- No obvious maintenance required but neither is everything new. Appearance and utility are above the standard and the overall effective age will be lower than the typical property.<br>
+5= Very Good- All items well maintained, many having been overhauled and repaired as they have shown signs of wear, increasing the life expectancy and lowering the effective age with little deterioration or obsolescence evident with a high degree of utility.<br>
+</p>
+<p>
+BUILDING GRADE<br>
+Represents the construction quality of improvements. Grades run from grade 1 to 13. Generally defined as:<br>
+1-3	Falls short of minimum building standards. Normally cabin or inferior structure.<br>
+4	Generally older, low quality construction. Does not meet code.<br>
+5	Low construction costs and workmanship. Small, simple design.<br>
+6	Lowest grade currently meeting building code. Low quality materials and simple designs.<br>
+7	Average grade of construction and design. Commonly seen in plats and older sub-divisions.<br>
+8	Just above average in construction and design. Usually better materials in both the exterior and interior finish work.<br>
+9	Better architectural design with extra interior and exterior design and quality.<br>
+10	Homes of this quality generally have high quality features. Finish work is better and more design quality is seen in the floor plans. Generally have a larger square footage.<br>
+11	Custom design and higher quality finish work with added amenities of solid woods, bathroom fixtures and more luxurious options.<br>
+12	Custom design and excellent builders. All materials are of the highest quality and all conveniences are present.<br>
+13	Generally custom designed and built. Mansion level. Large amount of highest quality cabinet work, wood trim, marble, entry ways etc.<br>
+</p>
                     
                 </div>
 

@@ -11,8 +11,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 from sqlalchemy import and_, or_, text
 
-from config import username
-from config import password
+#from config import username
+#from config import password
 
 from datetime import datetime
 
