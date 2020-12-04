@@ -59,6 +59,10 @@ function handleFeatureChange(event) {
 
     console.log("Entering handleFeatureChange(): Flying is for droids.");
 
+    //ggd
+    var summaryArea = d3.select("#Data_Presentation_Summary");
+    summaryArea.remove();
+
     // Prevent the page from refreshing
     //d3.event.preventDefault();
 
@@ -81,7 +85,14 @@ function handleFeatureChange(event) {
     gradeform_value = inputs["grade"];  // could be "ALL" or could be a specific value
 
     // Assemble the search URL to match the search bar filters selected
+    // ggd: var search_url = "/predict_MLR_price?"; 
     var search_url = "/predict_MLR_price?";
+    if (current_mode == "NN") {
+        search_url = "/predict_NN_price?";
+    } else if (current_mode == "MLR") {
+        search_url = "/predict_MLR_price?";
+    }
+    
     var num_params = 0;
 
     if (latitudeform_value)
@@ -248,7 +259,8 @@ function handleModeChange(new_mode)
     // don't have to query the database everytime we change a presentation mode.
     //handleFilterChange();
     // - or -
-    UpdatePresentationWindow(current_data);
+   //ggd: UpdatePresentationWindow(current_data);
+   search_button.dispatch('click');
 
     console.log("Exiting handleModeChange()");
 
@@ -266,15 +278,15 @@ function UpdatePresentationWindow(json_data)
     //var mode = d3.select("#PresentationMode").value; 
     var mode = current_mode;    // Global variable
 
-    if (mode == "home")
+    if (mode == "home") {
         homeMethod(json_data);
-
+    }
     else if (mode == "NN") {
         NN_Method(json_data);
     }
-    else if (mode == "MLR")
+    else if (mode == "MLR") {
         MLR_Method(json_data);
-
+    }
     console.log("Exiting UpdatePresentationWindow()");
 }
 
@@ -282,12 +294,15 @@ function homeMethod(json_data)
 {
     console.log("Entering homeMethod()...");
 
+    //ggd    
+    window.location.reload();
     //var globePath = "..\\static\\images\\globe.jpg";
-    var titleArea = d3.select("#displayTitle");
-    var summaryArea = d3.select("#Data_Presentation_Summary");
-    var displayArea = d3.select("#Data_Presentation_Window");
-
-    // Reset the title, summary, and display divs to empty
+//    var titleArea = d3.select("#displayTitle");
+ //   var summaryArea = d3.select("#Data_Presentation_Summary");
+//    var displayArea = d3.select("#Data_Presentation_Window");
+   
+   //ggd
+/* // Reset the title, summary, and display divs to empty
     titleArea.html("");
     summaryArea.html("");
     displayArea.html("");
@@ -322,7 +337,7 @@ function homeMethod(json_data)
     summaryArea.insert("p").text("6	= Lowest grade currently meeting building code. Low quality materials and simple designs.");
     summaryArea.insert("p").text("5	= Low construction costs and workmanship. Small, simple design.");
     summaryArea.insert("p").text("4	= Generally older, low quality construction. Does not meet code.");
-    summaryArea.insert("p").text("1-3 =Falls short of minimum building standards. Normally cabin or inferior structure.");
+    summaryArea.insert("p").text("1-3 =Falls short of minimum building standards. Normally cabin or inferior structure.");*/
 
     // displayArea.append("img")
     //    .attr("src", globePath)
@@ -349,13 +364,30 @@ function NN_Method(json_data)
     console.log("The data is: ", json_data);
     console.log("The data is: ", json_data["predicted_value"]);
 
-
-    titleArea.append("p").text("Welcome to the King County Home Price Predictor");
-    titleArea.append("p").text("Price predicted from the Neural Network is ", json_data["predicted_value"]);
-    titleArea.append("p").text(json_data["predicted_value"]);
+    //ggd
+    renderPredictedDisplay(json_data, "Neural Network");
+    //formatted_value = d3.format("($,.2f")(json_data["predicted_value"])
+    //titleArea.append("p").text("Welcome to the King County Home Price Predictor");
+    //titleArea.append("p").text("Price predicted from the Neural Network is ", json_data["predicted_value"]);
+    //titleArea.append("p").text(json_data["predicted_value"]);
+    //titleArea.append("p").text(formatted_value);
 
     console.log("Exiting NN_Method()...");
 
+}
+
+function renderPredictedDisplay(json_data, typeDisplay) {
+    var titleArea = d3.select("#displayTitle");
+    var displayArea = d3.select("#Data_Presentation_Window");
+    
+    formatted_value = d3.format("($,.2f")(json_data["predicted_value"])
+    titleArea.append("p").text("Welcome to the King County Home Price Predictor");
+    titleArea.append("p").text("Price predicted from the " + typeDisplay + " is ");
+    //titleArea.append("p").text(json_data["predicted_value"]);
+    //titleArea.append("p").text(formatted_value);
+    var predictedValueDisplay = displayArea.append("p");
+    predictedValueDisplay.attr("class", "predicted-value");
+    predictedValueDisplay.text(formatted_value);
 }
 
 function MLR_Method(json_data)
@@ -375,13 +407,14 @@ function MLR_Method(json_data)
     console.log("The data is: ", json_data);
     console.log("The data is: ", json_data["predicted_value"]);
 
-
-    titleArea.append("p").text("Welcome to the King County Home Price Predictor");
-    titleArea.append("p").text("Price predicted from the Multi-Linear Regression is ", json_data["predicted_value"]);
-    titleArea.append("p").text(json_data["predicted_value"]);
+    //ggd
+    renderPredictedDisplay(json_data, "Multi-Linear Regression");
+    //formatted_value = d3.format("($,.2f")(json_data["predicted_value"])
+    //titleArea.append("p").text("Welcome to the King County Home Price Predictor");
+    //titleArea.append("p").text("Price predicted from the Multi-Linear Regression is ", json_data["predicted_value"]);
+    //titleArea.append("p").text(json_data["predicted_value"]);
+    //titleArea.append("p").text(formatted_value);
 
     console.log("Exiting MLR_Method()...");
 
 }
-
-
