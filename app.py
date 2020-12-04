@@ -45,14 +45,15 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0 # Effectively disables page caching
 #with open("Trained_Models/chris_best_model.h5", 'rb') as pickle_file:
 #    content = pickle.load(pickle_file)
 
-model = load_model("Trained_Models/chris_best_model.h5")
+NN_model = load_model("Trained_Models/chris_best_model.h5")
+
+MLR_model = pickle.load(open("Trained_Models/katrice_MLR_model.h5", 'rb'))
+#MLR_model = load_model("Trained_Models/katrice_best_model.h5")
 
 # Load the StandardScaler
 
 X_Scaler = StandardScaler()
 X_Scaler = load('Trained_Models/std_scaler.bin')
-
-
 
 # Here's where we define the various application routes ...
 @app.route("/")
@@ -126,7 +127,50 @@ def predict_NN_price():
     # Hypothetical House
     # ?lat=47.5112&long=-122.257&yr_built=1985&sqft_living=2000&floors=1&sqft_above=1600&sqft_basement=400&sqft_lot=5000&bedrooms=3&bathrooms=2&condition=3&grade=7
 
-    predicted_value = model.predict(X_Scaler.transform(features))
+    predicted_value = NN_model.predict(X_Scaler.transform(features))
+
+    result = {"predicted_value": str(predicted_value[0][0])}
+    
+    print(result)
+
+    return result
+
+@app.route("/predict_MLR_price")
+def predict_MLR_price():
+    ''' Process the request arguments and feed into the prediction model. '''
+
+    ### REQUIRED ###
+    latitude = request.args.get('lat', None)
+    longitude = request.args.get('long', None)
+    yr_built = request.args.get('yr_built', None)
+    sqft_living = request.args.get('sqft_living', None)
+    floors = request.args.get('floors', None)
+    sqft_above = request.args.get('sqft_above', None)
+    sqft_basement = request.args.get('sqft_basement', None)
+    sqft_lot = request.args.get('sqft_lot', None)
+    bedrooms = request.args.get('bedrooms', None)
+    bathrooms = request.args.get('bathrooms', None)
+    condition = request.args.get('condition', None)
+    grade = request.args.get('grade', None)
+
+    features = []
+    features = build_input_row(latitude, longitude, yr_built, 
+                    sqft_living, floors, sqft_above, sqft_basement, sqft_lot,
+                    bedrooms, bathrooms, condition, grade)
+    print(features)
+
+    # This is the order expected by the model
+    # bedrooms, bathrooms, sqft_living, sqft_lot, floors, condition
+    # grade, sqft_above, sqft_basement, yr_built, latitude, longitude
+    # features = [3, 2, 2000, 5000, 1, 3, 7, 1600, 400, 1985, 47.1, -122.1]
+    # features = [[3, 2, 2000, 5000, 1, 3, 7, 1600, 400, 1985, 47.1, -122.1]]
+    # Use this for testing this route's url
+    # Real House ie. X_trimmed.head(1)
+    # ?lat=47.5112&long=-122.257&yr_built=1955&sqft_living=1180&floors=1&sqft_above=1180&sqft_basement=0&sqft_lot=5650&bedrooms=3&bathrooms=1&condition=3&grade=7
+    # Hypothetical House
+    # ?lat=47.5112&long=-122.257&yr_built=1985&sqft_living=2000&floors=1&sqft_above=1600&sqft_basement=400&sqft_lot=5000&bedrooms=3&bathrooms=2&condition=3&grade=7
+
+    predicted_value = MLR_model.predict(X_Scaler.transform(features))
 
     result = {"predicted_value": str(predicted_value[0][0])}
     

@@ -48,10 +48,9 @@
     <link rel="stylesheet" type="text/css" href="../static/css/style.css">
 </head>
 
-<body>
+<body style="background-color: #F3F3F3;" onload="homeMethod(null)">
   <div class="wrapper">
 
-    <body style="background-color: #F3F3F3;">
     <div class="container">
         <div class="row">
             <div class="col-md-12 jumbotron text-center" style="color: #00925F";id="jumbotron" >
@@ -82,8 +81,8 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown" id="Presentation_Mode">
                         <li class="dropdown-item" onclick="handleModeChange('home')" href="#">Home</li>
-                        <li class="dropdown-item" onclick="handleModeChange('Neural Network')" href="#">Neural Network</li>
-                        <li class="dropdown-item" onclick="handleModeChange('Multivariate Linear Regression')" href="#">MLR</li>
+                        <li class="dropdown-item" onclick="handleModeChange('NN')" href="#">Neural Network</li>
+                        <li class="dropdown-item" onclick="handleModeChange('MLR')" href="#">Multi-Linear Regression</li>
                         <!-- <li class="dropdown-item" onclick="handleModeChange('table')" href="#">Table</li>
                         <li class="dropdown-item" onclick="handleModeChange('javaLib')" href="#">Bar Chart</li>
                         <li class="dropdown-item disabled" onclick="handleModeChange('FIXME')"href="">Data</li> -->

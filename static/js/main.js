@@ -81,7 +81,7 @@ function handleFeatureChange(event) {
     gradeform_value = inputs["grade"];  // could be "ALL" or could be a specific value
 
     // Assemble the search URL to match the search bar filters selected
-    var search_url = "/predict_NN_price?";
+    var search_url = "/predict_MLR_price?";
     var num_params = 0;
 
     if (latitudeform_value)
@@ -225,6 +225,35 @@ function handleFeatureChange(event) {
 }
 
 
+function handleModeChange(new_mode)
+{
+    console.log("Entering handleModeChange()");
+
+    // current_mode is a global variable that can be accessed in other functions
+    console.log("handleModeChange(): The currently active mode seems to be ...", current_mode);
+    current_mode = new_mode;
+    console.log("handleModeChange(): The new mode selected seems to be ...", new_mode);
+
+    // Update the Bootstrap Dropdown Menu Text
+    if (current_mode == "home")
+        $('#navbarDropdown').text("Home");
+    else if (current_mode == "NN")
+        $('#navbarDropdown').text("Neural Network");
+    else if (current_mode == "MLR")
+        $('#navbarDropdown').text("Multi-Linear Regression");
+    else
+        $('#navbarDropdown').text("FIXME");
+
+    // FIXME - Try caching the previous results of this function globally so we 
+    // don't have to query the database everytime we change a presentation mode.
+    //handleFilterChange();
+    // - or -
+    UpdatePresentationWindow(current_data);
+
+    console.log("Exiting handleModeChange()");
+
+}
+
 function UpdatePresentationWindow(json_data)
 {
     console.log("Entering UpdatePresentationWindow()");
@@ -240,10 +269,10 @@ function UpdatePresentationWindow(json_data)
     if (mode == "home")
         homeMethod(json_data);
 
-    else if (mode == "Neural Network") {
+    else if (mode == "NN") {
         NN_Method(json_data);
     }
-    else if (mode == "Multivariate Linear Regression")
+    else if (mode == "MLR")
         MLR_Method(json_data);
 
     console.log("Exiting UpdatePresentationWindow()");
@@ -253,7 +282,7 @@ function homeMethod(json_data)
 {
     console.log("Entering homeMethod()...");
 
-    var globePath = "..\\static\\images\\globe.jpg";
+    //var globePath = "..\\static\\images\\globe.jpg";
     var titleArea = d3.select("#displayTitle");
     var summaryArea = d3.select("#Data_Presentation_Summary");
     var displayArea = d3.select("#Data_Presentation_Window");
@@ -264,6 +293,8 @@ function homeMethod(json_data)
     displayArea.html("");
 
     titleArea.append("p").text("Welcome to the King County Home Price Predictor");
+    //titleArea.append("p").text("Price predicted from the Neural Network is ", json_data["predicted_price"]);
+
 
     //Add the summary
     //summaryArea.insert("h2").text("Home - Welcome to the International Hurricane Database");
@@ -285,9 +316,7 @@ function homeMethod(json_data)
                                 12 = Custom design and excellent builders. All materials are of the highest quality and all conveniences are present.\n \
                                 11 = Custom design and higher quality finish work with added amenities of solid woods, bathroom fixtures and more luxurious options.\n");
     summaryArea.insert("p").text("10 = Homes of this quality generally have high quality features. Finish work is better and more design quality is seen in the floor plans. Generally have a larger square footage.");
-    summaryArea.insert("br");
     summaryArea.insert("p").text("9	= Better architectural design with extra interior and exterior design and quality.");
-    summaryArea.insert("br");
     summaryArea.insert("p").text("8	= Just above average in construction and design. Usually better materials in both the exterior and interior finish work.");
     summaryArea.insert("p").text("7	= Average grade of construction and design. Commonly seen in plats and older sub-divisions.");
     summaryArea.insert("p").text("6	= Lowest grade currently meeting building code. Low quality materials and simple designs.");
@@ -295,11 +324,64 @@ function homeMethod(json_data)
     summaryArea.insert("p").text("4	= Generally older, low quality construction. Does not meet code.");
     summaryArea.insert("p").text("1-3 =Falls short of minimum building standards. Normally cabin or inferior structure.");
 
-    displayArea.append("img")
-       .attr("src", globePath)
-       .attr("width", "500")
-       .attr("height", "500");
+    // displayArea.append("img")
+    //    .attr("src", globePath)
+    //    .attr("width", "500")
+    //    .attr("height", "500");
 
     console.log("Exiting homeMethod()...");
 }
+
+function NN_Method(json_data)
+{
+    console.log("Entering NN_Method()...");
+
+    //var globePath = "..\\static\\images\\globe.jpg";
+    var titleArea = d3.select("#displayTitle");
+    var summaryArea = d3.select("#Data_Presentation_Summary");
+    var displayArea = d3.select("#Data_Presentation_Window");
+
+    // Reset the title, summary, and display divs to empty
+    titleArea.html("");
+    summaryArea.html("");
+    displayArea.html("");
+
+    console.log("The data is: ", json_data);
+    console.log("The data is: ", json_data["predicted_value"]);
+
+
+    titleArea.append("p").text("Welcome to the King County Home Price Predictor");
+    titleArea.append("p").text("Price predicted from the Neural Network is ", json_data["predicted_value"]);
+    titleArea.append("p").text(json_data["predicted_value"]);
+
+    console.log("Exiting NN_Method()...");
+
+}
+
+function MLR_Method(json_data)
+{
+    console.log("Entering MLR_Method()...");
+
+    //var globePath = "..\\static\\images\\globe.jpg";
+    var titleArea = d3.select("#displayTitle");
+    var summaryArea = d3.select("#Data_Presentation_Summary");
+    var displayArea = d3.select("#Data_Presentation_Window");
+
+    // Reset the title, summary, and display divs to empty
+    titleArea.html("");
+    summaryArea.html("");
+    displayArea.html("");
+
+    console.log("The data is: ", json_data);
+    console.log("The data is: ", json_data["predicted_value"]);
+
+
+    titleArea.append("p").text("Welcome to the King County Home Price Predictor");
+    titleArea.append("p").text("Price predicted from the Multi-Linear Regression is ", json_data["predicted_value"]);
+    titleArea.append("p").text(json_data["predicted_value"]);
+
+    console.log("Exiting MLR_Method()...");
+
+}
+
 
