@@ -268,7 +268,6 @@ function homeMethod(json_data)
     //Add the summary
     //summaryArea.insert("h2").text("Home - Welcome to the International Hurricane Database");
     summaryArea.insert("p").text("Please use the search bar on the left to select the features of the house you are interested in. Use the dropdown menu above to change the price prediction model.");
-    summaryArea.insert("p").text("This data comes from the HURDAT2, the NOAA's hurricane database, by way of Kaggle.");
     summaryArea.insert("p").text("Project by Chris Sadlo, Glenda Decapia, Katrice Trahan, and Sarah Kachelmeier");
 
     summaryArea.insert("p").text("BUILDING CONDITION");
@@ -281,12 +280,14 @@ function homeMethod(json_data)
 
 
     summaryArea.insert("p").text("BUILDING GRADE");
-    summaryArea.insert("p").text("Represents the construction quality of improvements. Grades run from grade 1 to 13. Generally defined as:");
-    summaryArea.insert("p").text("13 = Generally custom designed and built. Mansion level. Large amount of highest quality cabinet work, wood trim, marble, entry ways etc.");
-    summaryArea.insert("p").text("12 = Custom design and excellent builders. All materials are of the highest quality and all conveniences are present.");
-    summaryArea.insert("p").text("11 = Custom design and higher quality finish work with added amenities of solid woods, bathroom fixtures and more luxurious options.");
+    summaryArea.insert("p").text("Represents the construction quality of improvements. Grades run from grade 1 to 13. Generally defined as:\n \
+                                13 = Generally custom designed and built. Mansion level. Large amount of highest quality cabinet work, wood trim, marble, entry ways etc.\n \
+                                12 = Custom design and excellent builders. All materials are of the highest quality and all conveniences are present.\n \
+                                11 = Custom design and higher quality finish work with added amenities of solid woods, bathroom fixtures and more luxurious options.\n");
     summaryArea.insert("p").text("10 = Homes of this quality generally have high quality features. Finish work is better and more design quality is seen in the floor plans. Generally have a larger square footage.");
+    summaryArea.insert("br");
     summaryArea.insert("p").text("9	= Better architectural design with extra interior and exterior design and quality.");
+    summaryArea.insert("br");
     summaryArea.insert("p").text("8	= Just above average in construction and design. Usually better materials in both the exterior and interior finish work.");
     summaryArea.insert("p").text("7	= Average grade of construction and design. Commonly seen in plats and older sub-divisions.");
     summaryArea.insert("p").text("6	= Lowest grade currently meeting building code. Low quality materials and simple designs.");
