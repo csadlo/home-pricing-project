@@ -5,11 +5,11 @@ from flask import jsonify
 from flask import request
 
 # Import the functions we need from SQL Alchemy
-import sqlalchemy
-from sqlalchemy.ext.automap import automap_base
-from sqlalchemy.orm import Session
-from sqlalchemy import create_engine
-from sqlalchemy import and_, or_, text
+#import sqlalchemy
+#from sqlalchemy.ext.automap import automap_base
+#from sqlalchemy.orm import Session
+#from sqlalchemy import create_engine
+#from sqlalchemy import and_, or_, text
 
 #from config import username
 #from config import password
@@ -17,6 +17,12 @@ from sqlalchemy import and_, or_, text
 from datetime import datetime
 
 import math
+
+from sklearn.preprocessing import StandardScaler
+from tensorflow.keras.models import load_model
+import joblib
+from joblib import dump, load
+import pickle
 
 
 # Connect to the database
@@ -32,6 +38,22 @@ import math
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0 # Effectively disables page caching
 
+
+# Load the model
+#model = pickle.load('Trained_Models/chris_best_model.h5')
+#model = joblib.load("Trained_Models/chris_best_model.h5")
+#with open("Trained_Models/chris_best_model.h5", 'rb') as pickle_file:
+#    content = pickle.load(pickle_file)
+
+model = load_model("Trained_Models/chris_best_model.h5")
+
+# Load the StandardScaler
+
+X_Scaler = StandardScaler()
+X_Scaler = load('Trained_Models/std_scaler.bin')
+
+
+
 # Here's where we define the various application routes ...
 @app.route("/")
 def IndexRoute():
@@ -41,197 +63,76 @@ def IndexRoute():
     webpage = render_template("index.html")
     return webpage
 
-@app.route("/other")
-def OtherRoute():
-    ''' This function runs when the user clicks the link for the other page.
-        Note that the html file must be located in a folder called templates. '''
 
-    # Note that this call to render template passes in the title parameter. 
-    # That title parameter is a 'Shirley' variable that could be called anything 
-    # we want. But, since we're using it to specify the page title, we call it 
-    # what we do. The name has to match the parameter used in other.html. 
-    webpage = render_template("other.html")
-    return webpage
-
-# def
-
-    ### Comment this to use the full database
-    #string = [hurricane_table.date_stamp/10000 >= "{}".format(1950)]
-    #conds = conds + string
-
-# if 
-
-
-@app.route("/searchFor")
-def searchFor():
-    ''' Query the database for population numbers and return the results as a JSON. '''
-# idk some variables
-
-    #conds = [ hurricane_table.date_stamp/10000 == '2005', hurricane_table.name == 'KATRINA' ]
-    print(conds)
-
-    # Open a session, run the query, and then close the session again
-                      
-                               
-    session.close 
-
-    print("Search Results: ", results)
-
-
-    # Return the jsonified result. 
+# This order is the current order of the features as listed on the home website
+def build_input_row(latitude, longitude, yr_built, 
+                    sqft_living, floors, sqft_above, sqft_basement, sqft_lot,
+                    bedrooms, bathrooms, condition, grade):
     
+    mylist = []
+
+    # Maintain this order of features. This is the order into the NN model
+    mylist.append(bedrooms)
+    mylist.append(bathrooms)
+    mylist.append(sqft_living)
+    mylist.append(sqft_lot)
+    mylist.append(floors)
+    mylist.append(condition)
+    mylist.append(grade)
+    mylist.append(sqft_above)
+    mylist.append(sqft_basement)
+    mylist.append(yr_built)
+    mylist.append(latitude)
+    mylist.append(longitude)
+
+    conds = []
+    conds.append(mylist)
+
+    return conds
 
 
-@app.route("/searchForUnique")
-def searchForUnique():
-    ''' Query the database for population numbers and return the results as a JSON. '''
+@app.route("/predict_NN_price")
+def predict_NN_price():
+    ''' Process the request arguments and feed into the prediction model. '''
 
     ### REQUIRED ###
-    specific  = request.args.get('type', None)  
+    latitude = request.args.get('lat', None)
+    longitude = request.args.get('long', None)
+    yr_built = request.args.get('yr_built', None)
+    sqft_living = request.args.get('sqft_living', None)
+    floors = request.args.get('floors', None)
+    sqft_above = request.args.get('sqft_above', None)
+    sqft_basement = request.args.get('sqft_basement', None)
+    sqft_lot = request.args.get('sqft_lot', None)
+    bedrooms = request.args.get('bedrooms', None)
+    bathrooms = request.args.get('bathrooms', None)
+    condition = request.args.get('condition', None)
+    grade = request.args.get('grade', None)
 
-    # ### OPTIONAL ###
-    # year  = request.args.get('year', None)
-    # name  = request.args.get('name', None)
-    # city = request.args.get('city', None)
-    # country = request.args.get('country', None)
-    # category = request.args.get('category', None)
-    # wind = request.args.get('wind', None)
-    # minwind = request.args.get('minwind', None)
-    # ocean = request.args.get('ocean', None)
+    features = []
+    features = build_input_row(latitude, longitude, yr_built, 
+                    sqft_living, floors, sqft_above, sqft_basement, sqft_lot,
+                    bedrooms, bathrooms, condition, grade)
+    print(features)
 
-    # conds = []
-    # conds = build_sql_filter(year, name, city, country, category, wind, minwind, ocean)
-    # print(conds)
+    # This is the order expected by the model
+    # bedrooms, bathrooms, sqft_living, sqft_lot, floors, condition
+    # grade, sqft_above, sqft_basement, yr_built, latitude, longitude
+    #features = [3, 2, 2000, 5000, 1, 3, 7, 1600, 400, 1985, 47.1, -122.1]
+    #features = [[3, 2, 2000, 5000, 1, 3, 7, 1600, 400, 1985, 47.1, -122.1]]
+    # Use this for testing this route's url
+    # Real House ie. X_trimmed.head(1)
+    # ?lat=47.5112&long=-122.257&yr_built=1955&sqft_living=1180&floors=1&sqft_above=1180&sqft_basement=0&sqft_lot=5650&bedrooms=3&bathrooms=1&condition=3&grade=7
+    # Hypothetical House
+    # ?lat=47.5112&long=-122.257&yr_built=1985&sqft_living=2000&floors=1&sqft_above=1600&sqft_basement=400&sqft_lot=5000&bedrooms=3&bathrooms=2&condition=3&grade=7
 
-    # Open a session, run the query, and then close the session again
-    # session = Session(engine)
+    predicted_value = model.predict(X_Scaler.transform(features))
 
-    # if (specific == "year"):
-    #     results = session.query(hurricane_table.date_stamp).filter(and_(*conds)).all()
-    # if (specific == "date"):
-    #     results = session.query(hurricane_table.date_stamp).filter(and_(*conds)).all()
-    # if (specific == "name"):
-    #     results = session.query(hurricane_table.name).filter(and_(*conds)).all()
-    # if (specific == "city"):
-    #     results = session.query(hurricane_table.city).filter(and_(*conds)).all()
-    # if (specific == "country"):
-    #     results = session.query(hurricane_table.country).filter(and_(*conds)).all()
-    # if (specific == "wind"):
-    #     results = session.query(hurricane_table.wind).filter(and_(*conds)).all()
-    # if (specific == "minwind"):
-    #     results = session.query(hurricane_table.wind).filter(and_(*conds)).all()
-    # if (specific == "category"):
-    #     results = session.query(hurricane_table.category).filter(and_(*conds)).all()
-    # if (specific == "ocean"):
-    #     results = session.query(hurricane_table.ocean).filter(and_(*conds)).all()
+    result = {"predicted_value": str(predicted_value[0][0])}
+    
+    print(result)
 
-    # session.close          
-
-    # List = []
-
-    if (specific == "year"):
-        for row in results:
-            yearNum = math.floor(row[0] / 10000)
-            if (yearNum not in List):
-                List.append(yearNum)
-    else:
-        for row in results:
-            if (row[0] not in List):
-                List.append(row[0])
-
-    #print("Search Results: ", results)
-    #print("Search List: ", List)
-
-    List.sort()
-
-    if (specific == "year"):
-        List.sort(reverse=True)
-
-
-    outboundJson = []
-
-    for element in List:
-
-        dict = {}
-        if (specific == "year"):
-            dict["year"] = element
-        if (specific == "date"):
-            dict["date_stamp"] = element
-        if (specific == "name"):
-            dict["name"] = element
-        if (specific == "city"):
-            dict["city"] = element
-        if (specific == "country"):
-            dict["country"] = element
-        if (specific == "wind"):
-            dict["wind"] = element
-        if (specific == "minwind"):
-            dict["minwind"] = element
-        if (specific == "category"):
-            dict["category"] = element
-        if (specific == "ocean"):
-            dict["ocean"] = element
-
-        outboundJson.append(dict)
-
-    # Return the jsonified result. 
-    return jsonify(outboundJson)
-
-
-@app.route("/yearData")
-def YearData():
-
-    # Open a session, run the query, and then close the session again
-    session = Session(engine)
-    results = session.query(hurricane_table.date_stamp).all()
-    session.close 
-
-    yearData = []
-    for date_stamp in results:
-        date_time_str = str(date_stamp[0])
-        date_time_obj = datetime.strptime(date_time_str, '%Y%m%d')
-        date_time_year = date_time_obj.year
-        if date_time_year not in yearData:
-            yearData.append(date_time_year)
-
-    yearData.sort(reverse=True)
-
-    yearJson = []
-    for year in yearData:
-        dict = {}
-        dict["year"] = year
-        #print("yearValue: ", date_time_obj.year)
-        yearJson.append(dict)
-
-    # Return the jsonified result. 
-    #return jsonify(yearData)
-    return jsonify(yearJson)
-
-@app.route("/nameData")
-def NameData():
-
-    # Open a session, run the query, and then close the session again
-    session = Session(engine)
-    results = session.query(hurricane_table.name).all()
-    session.close 
-
-    nameData = []
-    for name in results:
-        name_str = str(name[0])
-        if name_str not in nameData:
-            nameData.append(name_str)
-
-    nameData.sort()
-
-    nameJson = []
-    for name in nameData:
-        dict = {}
-        dict["name"] = name        
-        if dict not in nameJson:
-            nameJson.append(dict)
-
-    # Return the jsonified result. 
-    return jsonify(nameJson)
+    return result
 
 # This statement is required for Flask to do its job. 
 # Think of it as chocolate cake recipe. 

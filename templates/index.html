@@ -108,7 +108,7 @@
                             <label for="latitude">Latitude</label>
                             <input class="form-control" id="latitudeform" placeholder="47.5112"></select>
                             <label for="longitude">Longitude</label>
-                            <input class="form-control" id="longitudceform" placeholder="-122.257"></select>
+                            <input class="form-control" id="longitudeform" placeholder="-122.257"></select>
                         </li>
                         <li class="filter list-group-item">
                             <label for="year">Year Built</label>
@@ -116,16 +116,16 @@
                         </li>
                         <li class="filter list-group-item">
                             <label for="livingsquarefootage">Living Space (sqft)</label>
-                            <input class="form-control" id="sqftlivform" placeholder="2000"></select>
+                            <input class="form-control" id="sqftlivingform" placeholder="2000"></select>
                         
                             <label for="floors">Floors</label>
-                            <input class="form-control" id="categoryform" placeholder="1"></select>
+                            <input class="form-control" id="floorsform" placeholder="1"></select>
                         
-                            <label for="floors">Above Ground (sqft)</label>
-                            <input class="form-control" id="categoryform" placeholder="1600"></select>
+                            <label for="abovesquarefootage">Above Ground (sqft)</label>
+                            <input class="form-control" id="sqftaboveform" placeholder="1600"></select>
                         
-                            <label for="floors">Basement (sqft)</label>
-                            <input class="form-control" id="categoryform" placeholder="400"></select>
+                            <label for="basementsquarefootage">Basement (sqft)</label>
+                            <input class="form-control" id="sqftbasementform" placeholder="400"></select>
                         
                             <label for="lotsquarefootage">Lot Area (sqft)</label>
                             <input class="form-control" id="sqftlotform" placeholder="5000"></select>
@@ -139,16 +139,8 @@
                             <input class="form-control" id="bathroomsform" placeholder="2"></select>
                         </li>
                         <li class="filter list-group-item">
-                            <label for="grade">Grade</label>
-                            <select class="form-control" id="categoryform" placeholder="3">
-                                <option>13</option>
-                                <option>12</option>
-                                <option>11</option>
-                                <option>10</option>
-                                <option>9</option>
-                                <option>8</option>
-                                <option>7</option>
-                                <option>6</option>
+                            <label for="condition">Condition</label>
+                            <select class="form-control" id="conditionform" placeholder="7">
                                 <option>5</option>
                                 <option>4</option>
                                 <option>3</option>
@@ -157,8 +149,16 @@
                             </select>
                         </li>
                         <li class="filter list-group-item">
-                            <label for="condition">Condition</label>
-                            <select class="form-control" id="categoryform" placeholder="7">
+                            <label for="grade">Grade</label>
+                            <select class="form-control" id="gradeform" placeholder="3">
+                                <option>13</option>
+                                <option>12</option>
+                                <option>11</option>
+                                <option>10</option>
+                                <option>9</option>
+                                <option>8</option>
+                                <option>7</option>
+                                <option>6</option>
                                 <option>5</option>
                                 <option>4</option>
                                 <option>3</option>
@@ -249,9 +249,9 @@ Represents the construction quality of improvements. Grades run from grade 1 to 
 
 
     <!-- D3 JavaScript -->
-    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.3/d3.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.3/d3.min.js"></script>
     <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
-    <script type="text/javascript" src="https://d3js.org/queue.v1.min.js"></script>
+    <!--<script type="text/javascript" src="https://d3js.org/queue.v1.min.js"></script>
     <script type="text/javascript" src="https://d3js.org/topojson.v0.min.js"></script> -->
     <!---------------------->
 
@@ -266,7 +266,8 @@ Represents the construction quality of improvements. Grades run from grade 1 to 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
 
-    <!-- Import the main JavaScript code. -->    
+    <!-- Import the main JavaScript code. -->
+    <script type="text/javascript" src="static/js/main.js"></script>
 
 
     <!-- <img id="dom_image" style="display: none" src="../static/images/dom_gandalf_composite2.jpg">
@@ -291,8 +292,9 @@ Represents the construction quality of improvements. Grades run from grade 1 to 
                 //image2.style.display = 'block';
             }
         }
-        firstField.onkeyup = equals; -->
+        firstField.onkeyup = equals;
     </script>
+    -->
 
 </body>
 
