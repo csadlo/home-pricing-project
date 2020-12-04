@@ -118,8 +118,8 @@ def predict_NN_price():
     # This is the order expected by the model
     # bedrooms, bathrooms, sqft_living, sqft_lot, floors, condition
     # grade, sqft_above, sqft_basement, yr_built, latitude, longitude
-    #features = [3, 2, 2000, 5000, 1, 3, 7, 1600, 400, 1985, 47.1, -122.1]
-    #features = [[3, 2, 2000, 5000, 1, 3, 7, 1600, 400, 1985, 47.1, -122.1]]
+    # features = [3, 2, 2000, 5000, 1, 3, 7, 1600, 400, 1985, 47.1, -122.1]
+    # features = [[3, 2, 2000, 5000, 1, 3, 7, 1600, 400, 1985, 47.1, -122.1]]
     # Use this for testing this route's url
     # Real House ie. X_trimmed.head(1)
     # ?lat=47.5112&long=-122.257&yr_built=1955&sqft_living=1180&floors=1&sqft_above=1180&sqft_basement=0&sqft_lot=5650&bedrooms=3&bathrooms=1&condition=3&grade=7
@@ -133,6 +133,7 @@ def predict_NN_price():
     print(result)
 
     return result
+
 
 # This statement is required for Flask to do its job. 
 # Think of it as chocolate cake recipe. 

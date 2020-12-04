@@ -106,58 +106,58 @@
                     <ul class="list-group" id="filters">
                         <li class="filter list-group-item">
                             <label for="latitude">Latitude</label>
-                            <input class="form-control" id="latitudeform" placeholder="47.5112"></select>
+                            <input class="form-control" id="latitudeform" value="47.5112" placeholder="Provide a latitude"></select>
                             <label for="longitude">Longitude</label>
-                            <input class="form-control" id="longitudeform" placeholder="-122.257"></select>
+                            <input class="form-control" id="longitudeform" value="-122.257" placeholder="Provide a longitude"></select>
                         </li>
                         <li class="filter list-group-item">
                             <label for="year">Year Built</label>
-                            <input class="form-control" id="yearform" placeholder="1994"></select>
+                            <input class="form-control" id="yearform" value="1985" placeholder="Provide a year built"></select>
                         </li>
                         <li class="filter list-group-item">
                             <label for="livingsquarefootage">Living Space (sqft)</label>
-                            <input class="form-control" id="sqftlivingform" placeholder="2000"></select>
+                            <input class="form-control" id="sqftlivingform" value="2000" placeholder="Provide a latitude"></select>
                         
                             <label for="floors">Floors</label>
-                            <input class="form-control" id="floorsform" placeholder="1"></select>
+                            <input class="form-control" id="floorsform" value="1" placeholder="Number of floors"></select>
                         
                             <label for="abovesquarefootage">Above Ground (sqft)</label>
-                            <input class="form-control" id="sqftaboveform" placeholder="1600"></select>
+                            <input class="form-control" id="sqftaboveform" value="1600" placeholder="(sqft)"></select>
                         
                             <label for="basementsquarefootage">Basement (sqft)</label>
-                            <input class="form-control" id="sqftbasementform" placeholder="400"></select>
+                            <input class="form-control" id="sqftbasementform" value="400" placeholder="(sqft)"></select>
                         
                             <label for="lotsquarefootage">Lot Area (sqft)</label>
-                            <input class="form-control" id="sqftlotform" placeholder="5000"></select>
+                            <input class="form-control" id="sqftlotform" value="5000" placeholder="(sqft)"></select>
                         </li>
                         <li class="filter list-group-item">
                             <label for="bedrooms">Bedrooms</label>
-                            <input class="form-control" id="bedroomsform" placeholder="3"></select>
+                            <input class="form-control" id="bedroomsform" value="3" placeholder="Number of bedrooms"></select>
                         </li>
                         <li class="filter list-group-item">
                             <label for="bathrooms">Bathrooms</label>
-                            <input class="form-control" id="bathroomsform" placeholder="2"></select>
+                            <input class="form-control" id="bathroomsform" value="2" placeholder="Number of bathrooms"></select>
                         </li>
                         <li class="filter list-group-item">
                             <label for="condition">Condition</label>
-                            <select class="form-control" id="conditionform" placeholder="7">
+                            <select class="form-control" id="conditionform" value="7" placeholder="Condition (1-5)">
                                 <option>5</option>
                                 <option>4</option>
-                                <option>3</option>
+                                <option selected="selected">3</option>
                                 <option>2</option>
                                 <option>1</option>
                             </select>
                         </li>
                         <li class="filter list-group-item">
                             <label for="grade">Grade</label>
-                            <select class="form-control" id="gradeform" placeholder="3">
+                            <select class="form-control" id="gradeform" value="3" placeholder="Grade (1-13)">
                                 <option>13</option>
                                 <option>12</option>
                                 <option>11</option>
                                 <option>10</option>
                                 <option>9</option>
                                 <option>8</option>
-                                <option>7</option>
+                                <option selected="selected">7</option>
                                 <option>6</option>
                                 <option>5</option>
                                 <option>4</option>
@@ -201,36 +201,8 @@
                 </div>
 
                 <div id="Data_Presentation_Summary">
-                    <h6 class="par" id="displayTitle">Description of the project goes here.
-                        Cheeseburger say cheese mascarpone. Fromage frais fondue macaroni cheese jarlsberg cheese on toast cream cheese cheese on toast cheesy grin. Port-salut fondue blue castello when the cheese comes out everybody's happy stinking bishop port-salut babybel queso. St. agur blue cheese cheese strings cheese and biscuits cheese and wine babybel parmesan rubber cheese roquefort. Camembert de normandie say cheese cheese slices.
-
-Red leicester cheese and biscuits cheese triangles. Say cheese st. agur blue cheese stilton cheeseburger cheesy grin airedale red leicester squirty cheese. Stinking bishop rubber cheese airedale cut the cheese fromage parmesan manchego cheese slices. Squirty cheese pepper jack who moved my cheese blue castello.
+                    <h6 class="par" id="displayTitle">
                     </h6>
-
-<p>
-BUILDING CONDITION <br>
-Relative to age and grade. Coded 1-5.<br>
-1 = Poor- Worn out. Repair and overhaul needed on painted surfaces, roofing, plumbing, heating and numerous functional inadequacies. Excessive deferred maintenance and abuse, limited value-in-use, approaching abandonment or major reconstruction; reuse or change in occupancy is imminent. Effective age is near the end of the scale regardless of the actual chronological age.<br>
-2 = Fair- Badly worn. Much repair needed. Many items need refinishing or overhauling, deferred maintenance obvious, inadequate building utility and systems all shortening the life expectancy and increasing the effective age.<br>
-3 = Average- Some evidence of deferred maintenance and normal obsolescence with age in that a few minor repairs are needed, along with some refinishing. All major components still functional and contributing toward an extended life expectancy. Effective age and utility is standard for like properties of its class and usage.<br>
-4 = Good- No obvious maintenance required but neither is everything new. Appearance and utility are above the standard and the overall effective age will be lower than the typical property.<br>
-5= Very Good- All items well maintained, many having been overhauled and repaired as they have shown signs of wear, increasing the life expectancy and lowering the effective age with little deterioration or obsolescence evident with a high degree of utility.<br>
-</p>
-<p>
-BUILDING GRADE<br>
-Represents the construction quality of improvements. Grades run from grade 1 to 13. Generally defined as:<br>
-1-3	Falls short of minimum building standards. Normally cabin or inferior structure.<br>
-4	Generally older, low quality construction. Does not meet code.<br>
-5	Low construction costs and workmanship. Small, simple design.<br>
-6	Lowest grade currently meeting building code. Low quality materials and simple designs.<br>
-7	Average grade of construction and design. Commonly seen in plats and older sub-divisions.<br>
-8	Just above average in construction and design. Usually better materials in both the exterior and interior finish work.<br>
-9	Better architectural design with extra interior and exterior design and quality.<br>
-10	Homes of this quality generally have high quality features. Finish work is better and more design quality is seen in the floor plans. Generally have a larger square footage.<br>
-11	Custom design and higher quality finish work with added amenities of solid woods, bathroom fixtures and more luxurious options.<br>
-12	Custom design and excellent builders. All materials are of the highest quality and all conveniences are present.<br>
-13	Generally custom designed and built. Mansion level. Large amount of highest quality cabinet work, wood trim, marble, entry ways etc.<br>
-</p>
                     
                 </div>
 

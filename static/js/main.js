@@ -48,6 +48,7 @@ function GetFeatureBarInputValues()
 
     console.log("Exiting GetFeatureBarInputValues()");
 
+
     return dict;
 }
 
@@ -206,29 +207,98 @@ function handleFeatureChange(event) {
     console.log("Constructing Search URL = ", search_url);
 
     // // Access the database and grab the data matching the requirements
-    // d3.json(search_url).then(function (json_data) 
-    // {
-    //     // Cache the filtered json data so that we can skip running 
-    //     // handleFilterChange() during a handleModeChange() event
-    //     current_data = json_data;
+    d3.json(search_url).then(function (json_data) 
+    {
+        // handleFeatureChange() during a handleModeChange() event
+        current_data = json_data;
 
-    //     console.log("Accessing URL:", search_url);
-    //     console.log("Database Returns: ", current_data);
+        console.log("Accessing URL:", search_url);
+        console.log("Neural Network Modal returns: ", current_data);
 
-    //     UpdatePresentationWindow(current_data);
+        UpdatePresentationWindow(current_data);
 
-    //     // Dynamically Update all of the OTHER drop down menus, while maintaining an "ALL" option
-    //     UpdateYearDropDownMenu(current_data);
-    //     UpdateNameDropDownMenu(current_data);
-    //     UpdateDropDownMenu("city", current_data);
-    //     UpdateDropDownMenu("country", current_data);
-    //     UpdateDropDownMenu("category", current_data);
-    //     UpdateDropDownMenu("wind", current_data);
-    //     UpdateDropDownMenu("minwind", current_data);
-    //     UpdateDropDownMenu("ocean", current_data);
-    // });
+    });
 
     console.log("Exiting handleFeatureChange(): Another Happy Landing!");
 
     return false;
 }
+
+
+function UpdatePresentationWindow(json_data)
+{
+    console.log("Entering UpdatePresentationWindow()");
+
+    d3.selectAll("#Data_Presentation_Window > *").remove();
+    //document.getElementById("Data_Presentation_Window").innerHTML = "";    
+    //document.getElementById("Data_Presentation_Window").classList.remove('leaflet-container', 'leaflet-retina', 'leaflet-fade-anim', 'leaflet-grab', 'leaflet-touch-drag');
+
+    //var mode = d3.select("#PresentationMode").property("value");
+    //var mode = d3.select("#PresentationMode").value; 
+    var mode = current_mode;    // Global variable
+
+    if (mode == "home")
+        homeMethod(json_data);
+
+    else if (mode == "Neural Network") {
+        NN_Method(json_data);
+    }
+    else if (mode == "Multivariate Linear Regression")
+        MLR_Method(json_data);
+
+    console.log("Exiting UpdatePresentationWindow()");
+}
+
+function homeMethod(json_data)
+{
+    console.log("Entering homeMethod()...");
+
+    var globePath = "..\\static\\images\\globe.jpg";
+    var titleArea = d3.select("#displayTitle");
+    var summaryArea = d3.select("#Data_Presentation_Summary");
+    var displayArea = d3.select("#Data_Presentation_Window");
+
+    // Reset the title, summary, and display divs to empty
+    titleArea.html("");
+    summaryArea.html("");
+    displayArea.html("");
+
+    titleArea.append("p").text("Welcome to the King County Home Price Predictor");
+
+    //Add the summary
+    //summaryArea.insert("h2").text("Home - Welcome to the International Hurricane Database");
+    summaryArea.insert("p").text("Please use the search bar on the left to select the features of the house you are interested in. Use the dropdown menu above to change the price prediction model.");
+    summaryArea.insert("p").text("This data comes from the HURDAT2, the NOAA's hurricane database, by way of Kaggle.");
+    summaryArea.insert("p").text("Project by Chris Sadlo, Glenda Decapia, Katrice Trahan, and Sarah Kachelmeier");
+
+    summaryArea.insert("p").text("BUILDING CONDITION");
+    summaryArea.insert("p").text("Relative to age and grade. Coded 1-5.");
+    summaryArea.insert("p").text("5 = Very Good - All items well maintained, many having been overhauled and repaired as they have shown signs of wear, increasing the life expectancy and lowering the effective age with little deterioration or obsolescence evident with a high degree of utility.");
+    summaryArea.insert("p").text("4 = Good - No obvious maintenance required but neither is everything new. Appearance and utility are above the standard and the overall effective age will be lower than the typical property.");
+    summaryArea.insert("p").text("3 = Average - Some evidence of deferred maintenance and normal obsolescence with age in that a few minor repairs are needed, along with some refinishing. All major components still functional and contributing toward an extended life expectancy. Effective age and utility is standard for like properties of its class and usage.");
+    summaryArea.insert("p").text("2 = Fair - Badly worn. Much repair needed. Many items need refinishing or overhauling, deferred maintenance obvious, inadequate building utility and systems all shortening the life expectancy and increasing the effective age.");
+    summaryArea.insert("p").text("1 = Poor - Worn out. Repair and overhaul needed on painted surfaces, roofing, plumbing, heating and numerous functional inadequacies. Excessive deferred maintenance and abuse, limited value-in-use, approaching abandonment or major reconstruction; reuse or change in occupancy is imminent. Effective age is near the end of the scale regardless of the actual chronological age.");
+
+
+    summaryArea.insert("p").text("BUILDING GRADE");
+    summaryArea.insert("p").text("Represents the construction quality of improvements. Grades run from grade 1 to 13. Generally defined as:");
+    summaryArea.insert("p").text("13 = Generally custom designed and built. Mansion level. Large amount of highest quality cabinet work, wood trim, marble, entry ways etc.");
+    summaryArea.insert("p").text("12 = Custom design and excellent builders. All materials are of the highest quality and all conveniences are present.");
+    summaryArea.insert("p").text("11 = Custom design and higher quality finish work with added amenities of solid woods, bathroom fixtures and more luxurious options.");
+    summaryArea.insert("p").text("10 = Homes of this quality generally have high quality features. Finish work is better and more design quality is seen in the floor plans. Generally have a larger square footage.");
+    summaryArea.insert("p").text("9	= Better architectural design with extra interior and exterior design and quality.");
+    summaryArea.insert("p").text("8	= Just above average in construction and design. Usually better materials in both the exterior and interior finish work.");
+    summaryArea.insert("p").text("7	= Average grade of construction and design. Commonly seen in plats and older sub-divisions.");
+    summaryArea.insert("p").text("6	= Lowest grade currently meeting building code. Low quality materials and simple designs.");
+    summaryArea.insert("p").text("5	= Low construction costs and workmanship. Small, simple design.");
+    summaryArea.insert("p").text("4	= Generally older, low quality construction. Does not meet code.");
+    summaryArea.insert("p").text("1-3 =Falls short of minimum building standards. Normally cabin or inferior structure.");
+
+    displayArea.append("img")
+       .attr("src", globePath)
+       .attr("width", "500")
+       .attr("height", "500");
+
+    console.log("Exiting homeMethod()...");
+}
+
