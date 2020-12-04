@@ -1,4 +1,4 @@
-h1 { color: blue; }
+h1 { color: rgb(246, 246, 250); }
 h3 { color: red; }
 
 body,
@@ -13,6 +13,16 @@ html {
 .predicted-value {
   color: rgb(0, 255, 42);
   font-size: 32px;
+}
+
+.user-selection{
+  color: rgb(168, 245, 181);
+  font-size: 16px;
+}
+
+.dropdown-item{
+  color: rgb(4, 99, 21);
+  font-size: 16px;
 }
 
 * {

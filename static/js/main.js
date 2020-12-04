@@ -48,7 +48,6 @@ function GetFeatureBarInputValues()
 
     console.log("Exiting GetFeatureBarInputValues()");
 
-
     return dict;
 }
 
@@ -379,7 +378,7 @@ function NN_Method(json_data)
 function renderPredictedDisplay(json_data, typeDisplay) {
     var titleArea = d3.select("#displayTitle");
     var displayArea = d3.select("#Data_Presentation_Window");
-    
+
     formatted_value = d3.format("($,.2f")(json_data["predicted_value"])
     titleArea.append("p").text("Welcome to the King County Home Price Predictor");
     titleArea.append("p").text("Price predicted from the " + typeDisplay + " is ");
