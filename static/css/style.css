@@ -16,8 +16,8 @@ html {
 }
 
 .user-selection{
-  color: rgb(168, 245, 181);
-  font-size: 16px;
+  color: rgb(168, 245, 181) !important;
+  font-size: 16px !important;
 }
 
 .dropdown-item{
@@ -25,6 +25,11 @@ html {
   font-size: 16px;
 }
 
+body {
+  background-image: url("../images/header-bkgrnd.png");
+  background-repeat: repeat-x;
+  z-index: 0;
+}
 * {
     box-sizing: border-box;
     font-family: Ubuntu, italic;

@@ -58,10 +58,6 @@ function handleFeatureChange(event) {
 
     console.log("Entering handleFeatureChange(): Flying is for droids.");
 
-    //ggd
-    var summaryArea = d3.select("#Data_Presentation_Summary");
-    summaryArea.remove();
-
     // Prevent the page from refreshing
     //d3.event.preventDefault();
 
@@ -90,7 +86,7 @@ function handleFeatureChange(event) {
         search_url = "/predict_NN_price?";
     } else if (current_mode == "MLR") {
         search_url = "/predict_MLR_price?";
-    }
+    } 
     
     var num_params = 0;
 
@@ -233,7 +229,6 @@ function handleFeatureChange(event) {
 
     return false;
 }
-
 
 function handleModeChange(new_mode)
 {
