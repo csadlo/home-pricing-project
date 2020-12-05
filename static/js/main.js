@@ -22,9 +22,12 @@ var conditionInputElement = d3.select("#conditionform");
 var gradeInputElement = d3.select("#gradeform");
 
 // Select the button
-var search_button = d3.select("#search-btn");
+var search_button1 = d3.select("#search-btn1");
+var search_button2 = d3.select("#search-btn2");
 
-search_button.on("click", handleFeatureChange);
+search_button1.on("click", handleFeatureChange);
+search_button2.on("click", handleFeatureChange);
+
 
 
 // NOTE: UPDATE THIS FOR FILTER BAR CHANGES
@@ -81,8 +84,10 @@ function handleFeatureChange(event) {
 
     // Assemble the search URL to match the search bar filters selected
     // ggd: var search_url = "/predict_MLR_price?"; 
-    var search_url = "/predict_MLR_price?";
-    if (current_mode == "NN") {
+    var search_url = "/predict_price?";
+    if (current_mode == "home") {
+        search_url = "/predict_price?";
+    } else if (current_mode == "NN") {
         search_url = "/predict_NN_price?";
     } else if (current_mode == "MLR") {
         search_url = "/predict_MLR_price?";
@@ -219,7 +224,7 @@ function handleFeatureChange(event) {
         current_data = json_data;
 
         console.log("Accessing URL:", search_url);
-        console.log("Neural Network Modal returns: ", current_data);
+        console.log("Prediction models returns: ", current_data);
 
         UpdatePresentationWindow(current_data);
 
@@ -253,8 +258,8 @@ function handleModeChange(new_mode)
     // don't have to query the database everytime we change a presentation mode.
     //handleFilterChange();
     // - or -
-   //ggd: UpdatePresentationWindow(current_data);
-   search_button.dispatch('click');
+    UpdatePresentationWindow(current_data);
+    search_button1.dispatch('click');
 
     console.log("Exiting handleModeChange()");
 
@@ -264,7 +269,7 @@ function UpdatePresentationWindow(json_data)
 {
     console.log("Entering UpdatePresentationWindow()");
 
-    d3.selectAll("#Data_Presentation_Window > *").remove();
+    //d3.selectAll("#Data_Presentation_Window > *").remove();
     //document.getElementById("Data_Presentation_Window").innerHTML = "";    
     //document.getElementById("Data_Presentation_Window").classList.remove('leaflet-container', 'leaflet-retina', 'leaflet-fade-anim', 'leaflet-grab', 'leaflet-touch-drag');
 
@@ -288,23 +293,38 @@ function homeMethod(json_data)
 {
     console.log("Entering homeMethod()...");
 
+    console.log(json_data);
+
     //ggd    
-    window.location.reload();
+    //window.location.reload();
     //var globePath = "..\\static\\images\\globe.jpg";
-//    var titleArea = d3.select("#displayTitle");
- //   var summaryArea = d3.select("#Data_Presentation_Summary");
-//    var displayArea = d3.select("#Data_Presentation_Window");
+    var titleArea = d3.select("#displayTitle");
+    var summaryArea = d3.select("#Data_Presentation_Summary");
+    var displayArea = d3.select("#Data_Presentation_Window");
    
-   //ggd
-/* // Reset the title, summary, and display divs to empty
+    //ggd
+    // Reset the title, summary, and display divs to empty
     titleArea.html("");
     summaryArea.html("");
-    displayArea.html("");
+    //displayArea.html("");
 
-    titleArea.append("p").text("Welcome to the King County Home Price Predictor");
-    //titleArea.append("p").text("Price predicted from the Neural Network is ", json_data["predicted_price"]);
+    titleArea.append("p").text("Pricing model for houses in the Seattle (King County), Washington area.");
+
+    var formatted_value;
+
+    formatted_value = d3.format("($,.2f")(json_data["predicted_value_NN"]);
+    
+    summaryArea.append("p").text("Neural Network pricing model suggests ");
+    summaryArea.append("p").text(formatted_value);
+
+    formatted_value = json_data["predicted_value_MLR"];
+
+    formatted_value = d3.format("($,.2f")(json_data["predicted_value_MLR"]);
+    summaryArea.append("p").text("Multi-Linear Regression pricing model suggests ");
+    summaryArea.append("p").text(formatted_value);
 
 
+    /*
     //Add the summary
     //summaryArea.insert("h2").text("Home - Welcome to the International Hurricane Database");
     summaryArea.insert("p").text("Please use the search bar on the left to select the features of the house you are interested in. Use the dropdown menu above to change the price prediction model.");
@@ -348,41 +368,39 @@ function NN_Method(json_data)
     //var globePath = "..\\static\\images\\globe.jpg";
     var titleArea = d3.select("#displayTitle");
     var summaryArea = d3.select("#Data_Presentation_Summary");
-    var displayArea = d3.select("#Data_Presentation_Window");
+    //var displayArea = d3.select("#Data_Presentation_Window");
 
     // Reset the title, summary, and display divs to empty
     titleArea.html("");
     summaryArea.html("");
-    displayArea.html("");
+    //displayArea.html("");
 
     console.log("The data is: ", json_data);
-    console.log("The data is: ", json_data["predicted_value"]);
+    console.log("The data is: ", json_data["predicted_value_NN"]);
 
     //ggd
-    renderPredictedDisplay(json_data, "Neural Network");
-    //formatted_value = d3.format("($,.2f")(json_data["predicted_value"])
-    //titleArea.append("p").text("Welcome to the King County Home Price Predictor");
-    //titleArea.append("p").text("Price predicted from the Neural Network is ", json_data["predicted_value"]);
-    //titleArea.append("p").text(json_data["predicted_value"]);
-    //titleArea.append("p").text(formatted_value);
+    //renderPredictedDisplay(json_data, "Neural Network");
+    formatted_value = d3.format("($,.2f")(json_data["predicted_value_NN"])
+    titleArea.append("p").text("Welcome to the King County Home Price Predictor");
+    titleArea.append("p").text(formatted_value);
 
     console.log("Exiting NN_Method()...");
 
 }
 
-function renderPredictedDisplay(json_data, typeDisplay) {
-    var titleArea = d3.select("#displayTitle");
-    var displayArea = d3.select("#Data_Presentation_Window");
+// function renderPredictedDisplay(json_data, typeDisplay) {
+//     var titleArea = d3.select("#displayTitle");
+//     var displayArea = d3.select("#Data_Presentation_Window");
 
-    formatted_value = d3.format("($,.2f")(json_data["predicted_value"])
-    titleArea.append("p").text("Welcome to the King County Home Price Predictor");
-    titleArea.append("p").text("Price predicted from the " + typeDisplay + " is ");
-    //titleArea.append("p").text(json_data["predicted_value"]);
-    //titleArea.append("p").text(formatted_value);
-    var predictedValueDisplay = displayArea.append("p");
-    predictedValueDisplay.attr("class", "predicted-value");
-    predictedValueDisplay.text(formatted_value);
-}
+//     formatted_value = d3.format("($,.2f")(json_data["predicted_value"])
+//     titleArea.append("p").text("Welcome to the King County Home Price Predictor");
+//     titleArea.append("p").text("Price predicted from the " + typeDisplay + " is ");
+//     //titleArea.append("p").text(json_data["predicted_value"]);
+//     //titleArea.append("p").text(formatted_value);
+//     var predictedValueDisplay = displayArea.append("p");
+//     predictedValueDisplay.attr("class", "predicted-value");
+//     predictedValueDisplay.text(formatted_value);
+// }
 
 function MLR_Method(json_data)
 {
@@ -396,18 +414,16 @@ function MLR_Method(json_data)
     // Reset the title, summary, and display divs to empty
     titleArea.html("");
     summaryArea.html("");
-    displayArea.html("");
+    //displayArea.html("");
 
     console.log("The data is: ", json_data);
-    console.log("The data is: ", json_data["predicted_value"]);
+    console.log("The data is: ", json_data["predicted_value_MLR"]);
 
     //ggd
-    renderPredictedDisplay(json_data, "Multi-Linear Regression");
-    //formatted_value = d3.format("($,.2f")(json_data["predicted_value"])
-    //titleArea.append("p").text("Welcome to the King County Home Price Predictor");
-    //titleArea.append("p").text("Price predicted from the Multi-Linear Regression is ", json_data["predicted_value"]);
-    //titleArea.append("p").text(json_data["predicted_value"]);
-    //titleArea.append("p").text(formatted_value);
+    //renderPredictedDisplay(json_data, "Multi-Linear Regression");
+    formatted_value = d3.format("($,.2f")(json_data["predicted_value_MLR"])
+    titleArea.append("p").text("Welcome to the King County Home Price Predictor");
+    titleArea.append("p").text(formatted_value);
 
     console.log("Exiting MLR_Method()...");
 
